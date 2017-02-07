@@ -5,6 +5,12 @@ import { Tasks } from '../api/tasks';
 
 import './tasks.html';
 
+Template.task.helpers({
+  isOwner() {
+    return this.owner === Meteor.userId();
+  },
+});
+
 Template.task.events({
   'click .toggle-checked'(event) {
     // Set the checked property to the opposite of its current value
@@ -12,5 +18,8 @@ Template.task.events({
   },
   'click .delete'(event) {
     Meteor.call('tasks.remove', this._id);
+  },
+  'click .toggle-private'() {
+    Meteor.call('tasks.setPrivate', this._id, !this.private);
   },
 });
